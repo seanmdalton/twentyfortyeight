@@ -11,9 +11,12 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 
+/**
+ * @author github.com/seanmdalton
+ *
+ */
 class twentyfortyeight {
-	
-	static int points = 0;
+
 	static Label pointsLabel;
 	
 	static Display display;
@@ -23,20 +26,17 @@ class twentyfortyeight {
 		display = new Display();
 		shell = new Shell(display);
 		
-		buildMenuBar(shell);
+		buildMenuBar(shell); //create the main controls via a menu bar
 	
-	    // create a new GridLayout with two columns
-	    // of different size
-	    GridLayout layout = new GridLayout(1, false);
-
-	    // set the layout to the shell
-	    shell.setLayout(layout);
-		shell.setText("twentyfortyeight");
+	    GridLayout layout = new GridLayout(1, false);  // create a new GridLayout with one column
+	   
+	    shell.setLayout(layout);  // set the layout to the shell	    
+		shell.setText("twentyfortyeight"); //set the shell windowbar text
 		
 		// Shell can be used as container
 		pointsLabel = new Label(shell, SWT.NONE);
-		pointsLabel.setText("Points : " + points);
-		GridData data = new GridData(SWT.CENTER, SWT.TOP, false, false, 1, 1);
+		pointsLabel.setText("Points : 0");
+		GridData data = new GridData(SWT.CENTER, SWT.TOP, true, false, 1, 1);
 		data.widthHint = 100;
 		
 		pointsLabel.setLayoutData(data);
@@ -46,11 +46,12 @@ class twentyfortyeight {
 	    data = new GridData(SWT.FILL, SWT.TOP, true, false, 1, 1);
 	    seplabel .setLayoutData(data);
 
+	    //create our Board object, which will be the "game"
 		Board mainBoard = new Board(shell, SWT.NONE);		
 	    data = new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1);
 	    mainBoard.setLayoutData(data);	    
 	    
-	    shell.pack();
+	    shell.pack(); //assuming all the sizes were set correctly in the board widget, pack the shell
 		shell.open();
 		
         display.addFilter(SWT.KeyDown, new BoardListener(mainBoard));
@@ -66,6 +67,11 @@ class twentyfortyeight {
 		display.dispose(); 		
 	}
 	
+	/**
+	 * Create all the game controls via the menu bar
+	 * 
+	 * @param shell - the main shell initiated in the contructor
+	 */
 	public static void buildMenuBar(Shell shell){
 		Menu menuBar = new Menu(shell, SWT.BAR);
 		
@@ -87,21 +93,22 @@ class twentyfortyeight {
 		
 	}
 	
+	/**
+	 * 
+	 */
 	public static void newGame () {
-		
+		// TODO create newgame functionality
 	}
 	
 	public static void gameOver() {
-		System.out.println("gameOver");
-		
-	    // create a new label which is used as a separator
-	    Label gameOverLabel = new Label(shell, SWT.NONE);
-	    gameOverLabel.setText("Game Over!");
-	    gameOverLabel.setSize(50, 100);
-	    gameOverLabel.setLocation(50, 100);
-	    
+		// TODO create gameover functionality
 	}
 	
+	/**
+	 * @author github.com/seanmdalton
+	 * 
+	 * Create a nested static class specifically for listening on keyevents. Feed the keyevents to the Board object.
+	 */
 	static public class BoardListener implements Listener {
 		Board Board;
 
@@ -111,7 +118,6 @@ class twentyfortyeight {
 		
 		@Override
 		public void handleEvent(Event event) {
-			
 			try {
 				switch (event.keyCode) {
 					case 16777217: Board.swipeUp();
@@ -128,8 +134,6 @@ class twentyfortyeight {
 				
 				gameOver();
 			}
-			
-//			Board.drawBoard();
 			
 			pointsLabel.setText("Points : " + Integer.toString(Board.getPoints()));
 		}
